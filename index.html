@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>굴냥만두 - 불러오는 중</title>
+  <style>
+    html, body {
+      margin: 0; height: 100%;
+      background-color: #ffe090;
+      font-family: 'Jua', sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    #box {
+      text-align: center;
+      max-width: 340px;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 24px;
+      color: #6d4c2f;
+      margin-bottom: 4px;
+    }
+    p {
+      font-size: 14px;
+      color: #8d6e4a;
+      line-height: 1.6;
+      margin-top: 4px;
+    }
+
+    /* 통통 튀는 마스코트 */
+    #mascot {
+      width: 160px;
+      margin: 18px auto 8px auto;
+      animation: bounce 0.8s ease-in-out infinite;
+      filter: drop-shadow(0 8px 6px rgba(0, 0, 0, 0.15));
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-18px) scale(1.04, 0.96); }
+    }
+
+    /* 아래에서 채워지는 로딩바 */
+    #barOuter {
+      width: 100%;
+      height: 16px;
+      background-color: rgba(255, 255, 255, 0.6);
+      border: 2px solid #6d4c2f;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 22px;
+    }
+    #barInner {
+      height: 100%;
+      width: 0%;
+      background-color: #ff9800;
+      border-radius: 8px 0 0 8px;
+      animation: fillBar 3.2s ease-in-out infinite;
+    }
+    @keyframes fillBar {
+      0%   { width: 0%; }
+      70%  { width: 100%; }
+      100% { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="box">
+    <h1>🥟 만두가게 문 여는 중...</h1>
+    <img id="mascot" src="mascot.png" alt="굴냥만두">
+    <p>
+      아무도 없을 땐 서버가 잠깐 쉬고 있어요!<br>
+      친구들을 위해 지금 깨우고 있으니<br>
+      <strong>최대 30초</strong>만 기다려주세요 :)
+    </p>
+    <div id="barOuter"><div id="barInner"></div></div>
+  </div>
+
+  <script>
+    // 아래 주소만 실제 배포된 게임 주소로 바꿔주세요
+    const TARGET_URL = 'https://mandu-1on1.onrender.com';
+
+    let attempts = 0;
+
+    function tryWake() {
+      attempts++;
+
+      fetch(TARGET_URL, { mode: 'no-cors', cache: 'no-store' })
+        .then(() => {
+          window.location.href = TARGET_URL;
+        })
+        .catch(() => {
+          setTimeout(tryWake, 2000);
+        });
+    }
+
+    tryWake();
+  </script>
+</body>
+</html>
